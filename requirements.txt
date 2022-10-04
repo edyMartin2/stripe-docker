@@ -1,0 +1,2 @@
+flask
+stripe==4.2.0
