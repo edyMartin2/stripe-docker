@@ -1,7 +1,10 @@
-from flask import Flask, redirect
+from crypt import methods
+from flask import Flask
 import os
 import stripe
-
+import routes.Payout
+import routes.WebHook
+import routes.PymentMethods
 
 # app name 
 app = Flask(__name__)
@@ -9,30 +12,12 @@ app = Flask(__name__)
 #stripe configuration
 stripe.api_key = 'sk_test_51Ln8E7BftJasxDGEQllKFvbHakZyuJEcNWqUOtZpDLZGWfqr3UFQNKqHudN18RXRfBtFs3D0eZ62Ssq0q7AhYrC600MYqU5qh4'
 
-@app.route("/")
-def home ():
-    return "Hola mundo"
 
 
-@app.route("/create_session")
-def stripe_create_session():
-    session = stripe.checkout.Session.create(
-        line_items=[{
-        'price_data': {
-            'currency': 'usd',
-            'product_data': {
-            'name': 'T-shirt',
-            },
-            'unit_amount': 2000,
-        },
-        'quantity': 1,
-        }],
-        mode='payment',
-        success_url='https://example.com/success',
-        cancel_url='https://example.com/cancel',
-    )
+app.add_url_rule('/payout', view_func=routes.Payout.index,  methods = ['GET', 'POST', 'DELETE'])
+app.add_url_rule('/webhook', view_func=routes.WebHook.webhook_v1, methods= ['POST'])
 
-    return redirect(session.url, code=303)
+app.add_url_rule('/paymentmethods', view_func=routes.PymentMethods.paymentmethods, methods=['GET', 'POST'])
 
 
 if __name__ == "__main__":
