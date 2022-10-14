@@ -15,7 +15,7 @@ stripe.api_key = 'sk_test_51Ln8E7BftJasxDGEQllKFvbHakZyuJEcNWqUOtZpDLZGWfqr3UFQN
 
 
 app.add_url_rule('/payout', view_func=routes.Payout.index,  methods = ['GET', 'POST', 'DELETE'])
-app.add_url_rule('/webhook', view_func=routes.WebHook.webhook_v1, methods= ['POST'])
+app.add_url_rule('/webhook', view_func=routes.WebHook.webhook_v1, methods= ['POST', 'GET'])
 
 app.add_url_rule('/paymentmethods', view_func=routes.PymentMethods.paymentmethods, methods=['GET', 'POST'])
 

@@ -1,12 +1,9 @@
-from flask import request
-import json 
-
-def logger(value):
-    f = open('logs/holamundo.txt','w')
-    json.dump(value, f, indent = 6)
-    f.close()
+from flask import request 
+from utils.logger import logger_txt, logger_json
 
 def webhook_v1():
     record = request.get_json()
-    logger(record)    
-    return "Hola mundo"
+    headers = request.headers['STRIPE_SIGNATURE']
+    logger_json(record)
+    logger_txt(headers)    
+    return headers
